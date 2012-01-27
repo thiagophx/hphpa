@@ -108,6 +108,16 @@ class HPHPA_TextUI_Command
 
         $input->registerOption(
           new ezcConsoleOption(
+            '',
+            'quiet',
+            ezcConsoleInput::TYPE_NONE,
+            NULL,
+            FALSE
+           )
+        );
+
+        $input->registerOption(
+          new ezcConsoleOption(
             'v',
             'version',
             ezcConsoleInput::TYPE_NONE,
@@ -145,6 +155,7 @@ class HPHPA_TextUI_Command
         $arguments  = $input->getArguments();
         $checkstyle = $input->getOption('checkstyle')->value;
         $exclude    = $input->getOption('exclude')->value;
+        $quiet      = $input->getOption('quiet')->value;
 
         $suffixes = explode(',', $input->getOption('suffixes')->value);
         array_map('trim', $suffixes);
@@ -172,6 +183,11 @@ class HPHPA_TextUI_Command
             $report = new HPHPA_Report_Checkstyle;
             $report->generate($result, $checkstyle);
         }
+
+        if (!$quiet) {
+            $report = new HPHPA_Report_Text;
+            $report->generate($result, 'php://stdout');
+        }
     }
 
     /**
@@ -191,6 +207,8 @@ Usage: hphpa [switches] <directory|file> ...
 
   --help               Prints this usage information.
   --version            Prints the version and exits.
+
+  --quiet              Do not print violations.
 
 EOT;
     }

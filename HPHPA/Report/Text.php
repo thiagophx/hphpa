@@ -38,34 +38,57 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @since     File available since Release 1.1.0
+ * @since     File available since Release 1.0.0
  */
 
-require_once 'File/Iterator/Autoload.php';
-require_once 'ezc/Base/base.php';
+/**
+ * Writes violations in Checkstyle XML format to a file.
+ *
+ * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version   Release: @package_version@
+ * @link      http://github.com/sebastianbergmann/hphpa/tree
+ * @since     Class available since Release 1.0.0
+ */
+class HPHPA_Report_Text
+{
+    /**
+     * @param HPHPA_Result $result
+     * @param string       $filename
+     */
+    public function generate(HPHPA_Result $result, $filename)
+    {
+        $fp    = fopen($filename, 'w');
+        $first = TRUE;
 
-function hphpa_autoload($class) {
-    static $classes = NULL;
-    static $path = NULL;
+        foreach ($result->getViolations() as $file => $lines) {
+            if ($first) {
+                $first = FALSE;
+            } else {
+                fwrite($fp, "\n");
+            }
 
-    if ($classes === NULL) {
-        $classes = array(
-          'hphpa_analyzer' => '/Analyzer.php',
-          'hphpa_report_checkstyle' => '/Report/Checkstyle.php',
-          'hphpa_report_text' => '/Report/Text.php',
-          'hphpa_result' => '/Result.php',
-          'hphpa_textui_command' => '/TextUI/Command.php'
-        );
+            fwrite($fp, $file . "\n");
 
-        $path = dirname(__FILE__);
-    }
+            ksort($lines);
 
-    $cn = strtolower($class);
-
-    if (isset($classes[$cn])) {
-        require $path . $classes[$cn];
+            foreach ($lines as $line => $violations) {
+                foreach ($violations as $violation) {
+                    fwrite(
+                      $fp,
+                      sprintf(
+                        "  %-6d%s\n",
+                        $line,
+                        wordwrap(
+                          $violation['source'] . ': ' . $violation['message'],
+                          70,
+                          "\n        "
+                        )
+                      )
+                    );
+                }
+            }
+        }
     }
 }
-
-spl_autoload_register('hphpa_autoload');
-spl_autoload_register(array('ezcBase', 'autoload'));

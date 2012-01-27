@@ -30,8 +30,8 @@ Usage Example
     <checkstyle>
      <file name="/usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php">
       <error line="206"
-             message="$this-&gt;addFileToWhitelist($file, FALSE)"
-             source="TooManyArgument"
+             message="TooManyArgument $this-&gt;addFileToWhitelist($file, FALSE)"
+             source="HipHop.PHP.Analysis.TooManyArgument"
              severity="error"/>
      </file>
     </checkstyle>

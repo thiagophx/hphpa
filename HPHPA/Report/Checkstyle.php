@@ -73,18 +73,12 @@ class HPHPA_Report_Checkstyle
                     $out->startElement('error');
 
                     $out->writeAttribute('line', $line);
-
-                    $out->writeAttribute(
-                      'message',
-                      $violation['source'] . ' ' . $violation['message']
-                    );
-
+                    $out->writeAttribute('message', $violation['message']);
+                    $out->writeAttribute('severity', 'error');
                     $out->writeAttribute(
                       'source',
                       'HipHop.PHP.Analysis.' . $violation['source']
                     );
-
-                    $out->writeAttribute('severity', 'error');
 
                     $out->endElement();
                 }

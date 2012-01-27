@@ -80,11 +80,7 @@ class HPHPA_Report_Text
                       sprintf(
                         "  %-6d%s\n",
                         $line,
-                        wordwrap(
-                          $violation['source'] . ': ' . $violation['message'],
-                          70,
-                          "\n        "
-                        )
+                        wordwrap($violation['message'], 70, "\n        ")
                       )
                     );
                 }

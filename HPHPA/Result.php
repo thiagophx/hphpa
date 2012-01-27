@@ -67,6 +67,54 @@ class HPHPA_Result
     /**
      * @var array
      */
+    protected $typeToMessageMap = array(
+      'BadPHPIncludeFile' => '',
+      'PHPIncludeFileNotFound' => '',
+      'UseEvaluation' => '',
+      'UseUndeclaredVariable' => '',
+      'UseUndeclaredGlobalVariable' => '',
+      'UseUndeclaredConstant' => '',
+      'UnknownClass' => '',
+      'UnknownBaseClass' => '',
+      'UnknownObjectMethod' => '',
+      'InvalidMagicMethod' => '',
+      'UnknownFunction' => '',
+      'BadConstructorCall' => '',
+      'DeclaredVariableTwice' => '',
+      'DeclaredConstantTwice' => '',
+      'BadDefine' => '',
+      'RequiredAfterOptionalParam' => '',
+      'RedundantParameter' => '',
+      'TooFewArgument' => '',
+      'TooManyArgument' => '',
+      'BadArgumentType' => '',
+      'StatementHasNoEffect' => '',
+      'UseVoidReturn' => '',
+      'MissingObjectContext' => '',
+      'MoreThanOneDefault' => '',
+      'InvalidArrayElement' => '',
+      'InvalidDerivation' => '',
+      'InvalidOverride' => '',
+      'ReassignThis' => '',
+      'MissingAbstractMethodImpl' => '',
+      'BadPassByReference' => '',
+      'ConditionalClassLoading' => '',
+      'GotoUndefLabel' => '',
+      'GotoInvalidBlock' => '',
+      'AbstractProperty' => '',
+      'UnknownTrait' => '',
+      'MethodInMultipleTraits' => '',
+      'UnknownTraitMethod' => '',
+      'InvalidAccessModifier' => '',
+      'CyclicDependentTraits' => '',
+      'InvalidTraitStatement' => '',
+      'RedeclaredTrait' => '',
+      'InvalidInstantiation' => ''
+    );
+
+    /**
+     * @var array
+     */
     protected $violations = array();
 
     /**
@@ -100,6 +148,13 @@ class HPHPA_Result
                 $line     = $file['c1'][1];
                 $message  = trim($file['d']);
 
+                if ($this->typeToMessageMap[$rule] != '') {
+                    $message = sprintf(
+                      $this->typeToMessageMap[$rule], $message
+                    );
+                } else {
+                    $message = $rule . ': ' . $message;
+                }
 
                 if (!isset($this->violations[$filename])) {
                     $this->violations[$filename] = array();

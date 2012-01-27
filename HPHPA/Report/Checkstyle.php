@@ -55,7 +55,7 @@ class HPHPA_Report_Checkstyle
 {
     /**
      * @param HPHPA_Result $result
-     * @param string      $filename
+     * @param string       $filename
      */
     public function generate(HPHPA_Result $result, $filename)
     {

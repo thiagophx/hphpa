@@ -74,6 +74,7 @@ class HPHPA_Report_Checkstyle
                     $out->writeAttribute('line', $line);
                     $out->writeAttribute('message', $violation['message']);
                     $out->writeAttribute('source', $violation['source']);
+                    $out->writeAttribute('severity', 'error');
                     $out->endElement();
                 }
             }

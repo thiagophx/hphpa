@@ -31,6 +31,7 @@ Usage Example
      <file name="/usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php">
       <error line="206"
              message="$this-&gt;addFileToWhitelist($file, FALSE)"
-             source="TooManyArgument"/>
+             source="TooManyArgument"
+             severity="error"/>
      </file>
     </checkstyle>

@@ -71,10 +71,21 @@ class HPHPA_Report_Checkstyle
             foreach ($lines as $line => $violations) {
                 foreach ($violations as $violation) {
                     $out->startElement('error');
+
                     $out->writeAttribute('line', $line);
-		    $out->writeAttribute('message', $violations['source'] . ' ' . $violation['message']);
-                    $out->writeAttribute('source', 'HPHP.PHP.Analysis.' . $violation['source']);
+
+                    $out->writeAttribute(
+                      'message',
+                      $violations['source'] . ' ' . $violation['message']
+                    );
+
+                    $out->writeAttribute(
+                      'source',
+                      'HPHP.PHP.Analysis.' . $violation['source']
+                    );
+
                     $out->writeAttribute('severity', 'error');
+
                     $out->endElement();
                 }
             }

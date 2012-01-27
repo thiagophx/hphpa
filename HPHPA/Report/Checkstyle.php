@@ -81,7 +81,7 @@ class HPHPA_Report_Checkstyle
 
                     $out->writeAttribute(
                       'source',
-                      'HPHP.PHP.Analysis.' . $violation['source']
+                      'HipHop.PHP.Analysis.' . $violation['source']
                     );
 
                     $out->writeAttribute('severity', 'error');

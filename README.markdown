@@ -21,16 +21,18 @@ Usage Example
 -------------
 
     ➜  ~  hphpa --checkstyle hphp.xml /usr/local/src/code-coverage/PHP
-    hphpa 1.0.0 by Sebastian Bergmann.
+    hphpa 1.0.3 by Sebastian Bergmann.
 
     /usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php
-      206   TooManyArgument: $this->addFileToWhitelist($file, FALSE)
+      206   Too many arguments in function or method call:
+            $this->addFileToWhitelist($file, FALSE)
 
     ➜  ~  cat hphp.xml
     <checkstyle>
      <file name="/usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php">
       <error line="206"
-             message="TooManyArgument $this-&gt;addFileToWhitelist($file, FALSE)"
+             message="Too many arguments in function or method call:
+                      $this-&gt;addFileToWhitelist($file, FALSE)"
              source="HipHop.PHP.Analysis.TooManyArgument"
              severity="error"/>
      </file>

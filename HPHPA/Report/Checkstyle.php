@@ -76,7 +76,7 @@ class HPHPA_Report_Checkstyle
 
                     $out->writeAttribute(
                       'message',
-                      $violations['source'] . ' ' . $violation['message']
+                      $violation['source'] . ' ' . $violation['message']
                     );
 
                     $out->writeAttribute(

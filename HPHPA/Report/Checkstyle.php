@@ -72,8 +72,8 @@ class HPHPA_Report_Checkstyle
                 foreach ($violations as $violation) {
                     $out->startElement('error');
                     $out->writeAttribute('line', $line);
-                    $out->writeAttribute('message', $violation['message']);
-                    $out->writeAttribute('source', $violation['source']);
+		    $out->writeAttribute('message', $violations['source'] . ' ' . $violation['message']);
+                    $out->writeAttribute('source', 'HPHP.PHP.Analysis.' . $violation['source']);
                     $out->writeAttribute('severity', 'error');
                     $out->endElement();
                 }

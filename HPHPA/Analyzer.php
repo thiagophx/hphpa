@@ -63,7 +63,7 @@ class HPHPA_Analyzer
 
         shell_exec(
           sprintf(
-            'hphp -t analyze --input-list %s --output-dir %s --log 2',
+            'hphp -t analyze --input-list %s --output-dir %s --log 2 >/dev/null 2>&1',
             $tmpfname,
             dirname($tmpfname)
           )

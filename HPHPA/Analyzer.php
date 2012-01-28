@@ -63,24 +63,29 @@ class HPHPA_Analyzer
 
         shell_exec(
           sprintf(
-            'hphp -t analyze --input-list %s --output-dir %s --log 2 >/dev/null 2>&1',
+            'hphp -t analyze --input-list %s --output-dir %s --log 2 2>&1',
             $tmpfname,
             dirname($tmpfname)
           )
         );
 
+        unlink($tmpfname);
+
+        $codeError = dirname($tmpfname) . DIRECTORY_SEPARATOR . 'CodeError.js';
+        $stats     = dirname($tmpfname) . DIRECTORY_SEPARATOR . 'Stats.js';
+
+        if (!file_exists($codeError)) {
+            throw new RuntimeException(
+              'HipHop failed to complete static analysis.'
+            );
+        }
+
         $result = new HPHPA_Result(
-          json_decode(
-            file_get_contents(
-              dirname($tmpfname) . DIRECTORY_SEPARATOR . 'CodeError.js'
-            ),
-            TRUE
-          )
+          json_decode(file_get_contents($codeError), TRUE)
         );
 
-        unlink($tmpfname);
-        unlink(dirname($tmpfname) . DIRECTORY_SEPARATOR . 'CodeError.js');
-        unlink(dirname($tmpfname) . DIRECTORY_SEPARATOR . 'Stats.js');
+        unlink($codeError);
+        unlink($stats);
 
         return $result;
     }

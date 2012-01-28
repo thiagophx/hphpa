@@ -177,7 +177,14 @@ class HPHPA_TextUI_Command
         $this->printVersionString();
 
         $analyzer = new HPHPA_Analyzer;
-        $result   = $analyzer->run($files);
+
+        try {
+            $result = $analyzer->run($files);
+        }
+
+        catch (RuntimeException $e) {
+            $this->showError($e->getMessage());
+        }
 
         if ($checkstyle) {
             $report = new HPHPA_Report_Checkstyle;
@@ -188,6 +195,18 @@ class HPHPA_TextUI_Command
             $report = new HPHPA_Report_Text;
             $report->generate($result, 'php://stdout');
         }
+    }
+
+    /**
+     * Shows an error.
+     *
+     * @param string $message
+     * @since Method available since Release 1.0.4
+     */
+    protected function showError($message)
+    {
+        print $message . "\n";
+        exit(1);
     }
 
     /**

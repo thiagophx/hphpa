@@ -62,6 +62,7 @@ class HPHPA_Report_Checkstyle
         $out = new XMLWriter;
         $out->openURI($filename);
         $out->setIndent(TRUE);
+        $out->startDocument('1.0', 'UTF-8');
         $out->startElement('checkstyle');
 
         foreach ($result->getViolations() as $file => $lines) {

@@ -146,15 +146,9 @@ class HPHPA_Result
             foreach ($violations as $file) {
                 $filename = $file['c1'][0];
                 $line     = $file['c1'][1];
-                $message  = trim($file['d']);
-
-                if ($this->typeToMessageMap[$rule] != '') {
-                    $message = sprintf(
-                      $this->typeToMessageMap[$rule], $message
-                    );
-                } else {
-                    $message = $rule . ': ' . $message;
-                }
+                $message  = sprintf(
+                              $this->typeToMessageMap[$rule], trim($file['d'])
+                            );
 
                 if (!isset($this->violations[$filename])) {
                     $this->violations[$filename] = array();

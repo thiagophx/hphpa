@@ -76,7 +76,7 @@ class HPHPA_Result
       'UseUndeclaredConstant' => 'Constant "%s" is not declared',
       'UnknownClass' => 'Class "%s" is unknown',
       'UnknownBaseClass' => 'Base class "%s" is unknown',
-      'UnknownObjectMethod' => 'Method "%s" is unknown',
+      'UnknownObjectMethod' => 'Call to unknown method: %s',
       'InvalidMagicMethod' => 'Magic method "%s" is invalid',
       'UnknownFunction' => 'Unknown function "%s"',
       'BadConstructorCall' => 'Bad call to constructor: %s',

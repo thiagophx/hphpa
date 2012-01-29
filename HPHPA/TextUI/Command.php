@@ -210,11 +210,14 @@ class HPHPA_TextUI_Command
         }
 
         printf(
-          "%sFound %d violations in %d files (out of %d total files).\n",
+          "%sFound %d violation%s in %d file%s (out of %d total file%s).\n",
           !$quiet ? "\n" : '',
           $numViolations,
+          $numViolations != 1 ? 's' : '',
           $numFilesWithViolations,
-          count($files)
+          $numFilesWithViolations != 1 ? 's' : '',
+          count($files),
+          count($files) != 1 ? 's' : ''
         );
 
         if ($numViolations > 0) {

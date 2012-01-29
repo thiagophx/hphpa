@@ -195,6 +195,27 @@ class HPHPA_TextUI_Command
             $report = new HPHPA_Report_Text;
             $report->generate($result, 'php://stdout');
         }
+
+        $numFilesWithViolations = 0;
+        $numViolations          = 0;
+
+        foreach ($result->getViolations() as $file => $lines) {
+            $numFilesWithViolations++;
+
+            foreach ($lines as $line => $violations) {
+                foreach ($violations as $violation) {
+                    $numViolations++;
+                }
+            }
+        }
+
+        printf(
+          "%sFound %d violations in %d files (out of %d total files).\n",
+          !$quiet ? "\n" : '',
+          $numViolations,
+          $numFilesWithViolations,
+          count($files)
+        );
     }
 
     /**

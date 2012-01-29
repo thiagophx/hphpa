@@ -3,6 +3,12 @@ hphpa 1.0
 
 This is the list of changes for the hphpa 1.0 release series.
 
+hphpa 1.0.5
+-----------
+
+* A summary of information (number of violations, number of files with violations, number of files analyzed) is now printed.
+* `hphpa` now exits with status code `1` when violations are found.
+
 hphpa 1.0.4
 -----------
 

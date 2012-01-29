@@ -27,6 +27,8 @@ Usage Example
       206   Too many arguments in function or method call:
             $this->addFileToWhitelist($file, FALSE)
 
+    Found 1 violation in 1 file (out of 21 total files).
+
     ➜  ~  cat hphp.xml
     <?xml version="1.0" encoding="UTF-8"?>
     <checkstyle>

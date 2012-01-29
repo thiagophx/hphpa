@@ -58,8 +58,7 @@ class HPHPA_TextUI_Command
      */
     public function main()
     {
-        $input  = new ezcConsoleInput;
-        $output = new ezcConsoleOutput;
+        $input = new ezcConsoleInput;
 
         $input->registerOption(
           new ezcConsoleOption(
@@ -199,13 +198,11 @@ class HPHPA_TextUI_Command
         $numFilesWithViolations = 0;
         $numViolations          = 0;
 
-        foreach ($result->getViolations() as $file => $lines) {
+        foreach ($result->getViolations() as $lines) {
             $numFilesWithViolations++;
 
-            foreach ($lines as $line => $violations) {
-                foreach ($violations as $violation) {
-                    $numViolations++;
-                }
+            foreach ($lines as $violations) {
+                $numViolations += count($violations);
             }
         }
 

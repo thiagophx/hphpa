@@ -67,6 +67,11 @@ class HPHPA_Result
     /**
      * @var array
      */
+    protected $whitelist = array();
+
+    /**
+     * @var array
+     */
     protected $typeToMessageMap = array(
       'BadPHPIncludeFile' => 'Bad include: %s',
       'PHPIncludeFileNotFound' => 'Include not found: %s',
@@ -139,7 +144,9 @@ class HPHPA_Result
     protected function parse(array $errors)
     {
         foreach ($errors[1] as $rule => $violations) {
-            if (isset($this->blacklist[$rule]) || !is_array($violations)) {
+            if ((!empty($this->whitelist) && !isset($this->whitelist[$rule])) ||
+                isset($this->blacklist[$rule]) ||
+                !is_array($violations)) {
                 continue;
             }
 

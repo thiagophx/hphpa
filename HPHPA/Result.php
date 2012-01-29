@@ -155,7 +155,7 @@ class HPHPA_Result
                 }
 
                 if (!isset($this->violations[$filename][$line])) {
-                    $this->violations[$filename] = array();
+                    $this->violations[$filename][$line] = array();
                 }
 
                 $this->violations[$filename][$line][] = array(

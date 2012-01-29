@@ -216,6 +216,10 @@ class HPHPA_TextUI_Command
           $numFilesWithViolations,
           count($files)
         );
+
+        if ($numViolations > 0) {
+            exit(1);
+        }
     }
 
     /**

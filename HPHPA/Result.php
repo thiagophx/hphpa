@@ -143,11 +143,12 @@ class HPHPA_Result
                 continue;
             }
 
-            foreach ($violations as $file) {
-                $filename = $file['c1'][0];
-                $line     = $file['c1'][1];
+            foreach ($violations as $violation) {
+                $filename = $violation['c1'][0];
+                $line     = $violation['c1'][1];
                 $message  = sprintf(
-                              $this->typeToMessageMap[$rule], trim($file['d'])
+                              $this->typeToMessageMap[$rule],
+                              trim($violation['d'])
                             );
 
                 if (!isset($this->violations[$filename])) {

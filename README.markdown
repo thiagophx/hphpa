@@ -21,7 +21,7 @@ Usage Example
 -------------
 
     ➜  ~  hphpa --checkstyle hphp.xml /usr/local/src/code-coverage/PHP
-    hphpa 1.0.5 by Sebastian Bergmann.
+    hphpa 1.0.6 by Sebastian Bergmann.
 
     /usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php
       206   Too many arguments in function or method call:

@@ -3,6 +3,11 @@ hphpa 1.0
 
 This is the list of changes for the hphpa 1.0 release series.
 
+hphpa 1.0.6
+-----------
+
+* Fixed a bug that caused only one violation per file to be reported.
+
 hphpa 1.0.5
 -----------
 

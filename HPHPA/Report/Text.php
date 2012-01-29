@@ -86,5 +86,7 @@ class HPHPA_Report_Text
                 }
             }
         }
+
+        fclose($fp);
     }
 }

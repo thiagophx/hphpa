@@ -139,6 +139,14 @@ class HPHPA_Result
     }
 
     /**
+     * @param array $whitelist
+     */
+    public function setWhitelist(array $whitelist)
+    {
+        $this->whitelist = $whitelist;
+    }
+
+    /**
      * @param array $codeErrors
      */
     protected function parse(array $errors)

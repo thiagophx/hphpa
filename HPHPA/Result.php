@@ -42,7 +42,7 @@
  */
 
 /**
- * Parser for HipHop CodeErrors.js logfile.
+ * Parser for HipHop CodeError.js logfile.
  *
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>

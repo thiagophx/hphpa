@@ -41,33 +41,43 @@
  * @since     File available since Release 1.1.0
  */
 
-require_once 'File/Iterator/Autoload.php';
-require_once 'TheSeer/fDOMDocument/autoload.php';
-require_once 'ezc/Base/base.php';
+/**
+ * Configuration file loader.
+ *
+ * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version   Release: @package_version@
+ * @link      http://github.com/sebastianbergmann/hphpa/tree
+ * @since     Class available since Release 1.1.0
+ */
+class HPHPA_Configuration
+{
+    /**
+     * @var fDOMDocument
+     */
+    protected $xml;
 
-function hphpa_autoload($class) {
-    static $classes = NULL;
-    static $path = NULL;
-
-    if ($classes === NULL) {
-        $classes = array(
-          'hphpa_analyzer' => '/Analyzer.php',
-          'hphpa_configuration' => '/Configuration.php',
-          'hphpa_report_checkstyle' => '/Report/Checkstyle.php',
-          'hphpa_report_text' => '/Report/Text.php',
-          'hphpa_result' => '/Result.php',
-          'hphpa_textui_command' => '/TextUI/Command.php'
-        );
-
-        $path = dirname(__FILE__);
+    /**
+     * @param string $file
+     */
+    public function __construct($file)
+    {
+        $this->xml = new TheSeer\fDOM\fDOMDocument;
+        $this->xml->load($file);
     }
 
-    $cn = strtolower($class);
+    /**
+     * @return array
+     */
+    public function getWhitelist()
+    {
+        $whitelist = array();
 
-    if (isset($classes[$cn])) {
-        require $path . $classes[$cn];
+        foreach ($this->xml->getDOMXPath()->query('rule') as $rule) {
+            $whitelist[(string)$rule->getAttribute('name')] = TRUE;
+        }
+
+        return $whitelist;
     }
 }
-
-spl_autoload_register('hphpa_autoload');
-spl_autoload_register(array('ezcBase', 'autoload'));

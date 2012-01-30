@@ -71,6 +71,14 @@ class HPHPA_TextUI_Command
         $input->registerOption(
           new ezcConsoleOption(
             '',
+            'configuration',
+            ezcConsoleInput::TYPE_STRING
+           )
+        );
+
+        $input->registerOption(
+          new ezcConsoleOption(
+            '',
             'exclude',
             ezcConsoleInput::TYPE_STRING,
             array(),
@@ -151,10 +159,11 @@ class HPHPA_TextUI_Command
             exit(0);
         }
 
-        $arguments  = $input->getArguments();
-        $checkstyle = $input->getOption('checkstyle')->value;
-        $exclude    = $input->getOption('exclude')->value;
-        $quiet      = $input->getOption('quiet')->value;
+        $arguments     = $input->getArguments();
+        $checkstyle    = $input->getOption('checkstyle')->value;
+        $configuration = $input->getOption('configuration')->value;
+        $exclude       = $input->getOption('exclude')->value;
+        $quiet         = $input->getOption('quiet')->value;
 
         $suffixes = explode(',', $input->getOption('suffixes')->value);
         array_map('trim', $suffixes);
@@ -175,10 +184,25 @@ class HPHPA_TextUI_Command
 
         $this->printVersionString();
 
+        $whitelist = array();
+
+        if ($configuration) {
+            try {
+                $configuration = new HPHPA_Configuration($configuration);
+                $whitelist     = $configuration->getWhitelist();
+            }
+
+            catch (Exception $e) {
+                $this->showError('Could not read configuration.');
+            }
+        }
+
         $analyzer = new HPHPA_Analyzer;
+        $result   = new HPHPA_Result;
+        $result->setWhitelist($whitelist);
 
         try {
-            $result = $analyzer->run($files);
+            $analyzer->run($files, $result);
         }
 
         catch (RuntimeException $e) {
@@ -244,15 +268,16 @@ class HPHPA_TextUI_Command
         print <<<EOT
 Usage: hphpa [switches] <directory|file> ...
 
-  --checkstyle <file>  Write report in Checkstyle XML format to file.
+  --checkstyle <file>     Write report in Checkstyle XML format to file.
+  --configuration <file>  Read list of rules to apply from XML file.
 
-  --exclude <dir>      Exclude <dir> from code analysis.
-  --suffixes <suffix>  A comma-separated list of file suffixes to check.
+  --exclude <dir>         Exclude <dir> from code analysis.
+  --suffixes <suffix>     A comma-separated list of file suffixes to check.
 
-  --help               Prints this usage information.
-  --version            Prints the version and exits.
+  --help                  Prints this usage information.
+  --version               Prints the version and exits.
 
-  --quiet              Do not print violations.
+  --quiet                 Do not print violations.
 
 EOT;
     }

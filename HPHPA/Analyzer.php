@@ -54,9 +54,10 @@
 class HPHPA_Analyzer
 {
     /**
-     * @param array $files
+     * @param array        $files
+     * @param HPHPA_Result $result
      */
-    public function run(array $files)
+    public function run(array $files, HPHPA_Result $result)
     {
         $tmpfname = tempnam('/tmp', 'hphp');
         file_put_contents($tmpfname, join("\n", $files));
@@ -80,13 +81,9 @@ class HPHPA_Analyzer
             );
         }
 
-        $result = new HPHPA_Result(
-          json_decode(file_get_contents($codeError), TRUE)
-        );
+        $result->parse(json_decode(file_get_contents($codeError), TRUE));
 
         unlink($codeError);
         unlink($stats);
-
-        return $result;
     }
 }

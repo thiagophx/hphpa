@@ -123,14 +123,6 @@ class HPHPA_Result
     protected $violations = array();
 
     /**
-     * @param array $errors
-     */
-    public function __construct(array $errors)
-    {
-        $this->parse($errors);
-    }
-
-    /**
      * @return array
      */
     public function getViolations()
@@ -147,11 +139,11 @@ class HPHPA_Result
     }
 
     /**
-     * @param array $codeErrors
+     * @param array $codeError
      */
-    protected function parse(array $errors)
+    public function parse(array $codeError)
     {
-        foreach ($errors[1] as $rule => $violations) {
+        foreach ($codeError[1] as $rule => $violations) {
             if ((!empty($this->whitelist) && !isset($this->whitelist[$rule])) ||
                 isset($this->blacklist[$rule]) ||
                 !is_array($violations)) {

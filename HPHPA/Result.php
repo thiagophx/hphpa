@@ -132,6 +132,7 @@ class HPHPA_Result
 
     /**
      * @param array $whitelist
+     * @since Method available since Release 1.1.0
      */
     public function setWhitelist(array $whitelist)
     {

@@ -169,18 +169,18 @@ class HPHPA_TextUI_Command
         array_map('trim', $suffixes);
 
         if (!empty($arguments)) {
-            $facade = new File_Iterator_Facade;
-            $result = $facade->getFilesAsArray(
-              $arguments, $suffixes, array(), $exclude, TRUE
-            );
-
-            $files = $result['files'];
-
-            unset($result);
-        } else {
             $this->showHelp();
             exit(1);
         }
+
+        $facade = new File_Iterator_Facade;
+        $result = $facade->getFilesAsArray(
+          $arguments, $suffixes, array(), $exclude, TRUE
+        );
+
+        $files = $result['files'];
+
+        unset($result);
 
         $this->printVersionString();
 

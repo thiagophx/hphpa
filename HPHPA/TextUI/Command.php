@@ -159,7 +159,7 @@ class HPHPA_TextUI_Command
             exit(0);
         }
 
-        $arguments  = $input->getArguments();
+        $arguments = $input->getArguments();
 
         if (empty($arguments)) {
             $this->showHelp();
@@ -167,21 +167,32 @@ class HPHPA_TextUI_Command
         }
 
         $checkstyle = $input->getOption('checkstyle')->value;
-        $exclude    = $input->getOption('exclude')->value;
+        $excludes   = $input->getOption('exclude')->value;
         $ruleset    = $input->getOption('ruleset')->value;
         $suffixes   = explode(',', $input->getOption('suffixes')->value);
         $quiet      = $input->getOption('quiet')->value;
 
         array_map('trim', $suffixes);
 
-        $facade = new File_Iterator_Facade;
-        $result = $facade->getFilesAsArray(
-          $arguments, $suffixes, array(), $exclude, TRUE
-        );
+        $finder = new Symfony\Component\Finder\Finder;
 
-        $files = $result['files'];
+        foreach ($arguments as $argument) {
+            $finder->in($argument);
+        }
 
-        unset($result);
+        foreach ($excludes as $exclude) {
+            $finder->exclude($exclude);
+        }
+
+        foreach ($suffixes as $suffix) {
+            $finder->name('*' . $suffix);
+        }
+
+        $files = array();
+
+        foreach ($finder as $file) {
+            $files[] = $file->getRealpath();
+        }
 
         $this->printVersionString();
 

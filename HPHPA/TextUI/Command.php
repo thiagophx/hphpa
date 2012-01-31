@@ -174,18 +174,26 @@ class HPHPA_TextUI_Command
 
         array_map('trim', $suffixes);
 
+        $this->printVersionString();
+
         $finder = new Symfony\Component\Finder\Finder;
 
-        foreach ($arguments as $argument) {
-            $finder->in($argument);
+        try {
+            foreach ($arguments as $argument) {
+                $finder->in($argument);
+            }
+
+            foreach ($excludes as $exclude) {
+                $finder->exclude($exclude);
+            }
+
+            foreach ($suffixes as $suffix) {
+                $finder->name('*' . $suffix);
+            }
         }
 
-        foreach ($excludes as $exclude) {
-            $finder->exclude($exclude);
-        }
-
-        foreach ($suffixes as $suffix) {
-            $finder->name('*' . $suffix);
+        catch (Exception $e) {
+            $this->showError($e->getMessage());
         }
 
         $files = array();
@@ -193,8 +201,6 @@ class HPHPA_TextUI_Command
         foreach ($finder as $file) {
             $files[] = $file->getRealpath();
         }
-
-        $this->printVersionString();
 
         if (!$rulesetFile) {
             $rulesetFile = $this->getDefaultRulesetFile();

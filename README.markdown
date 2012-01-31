@@ -20,8 +20,10 @@ After the installation you can find the `hphpa` source files inside your local P
 Usage Example
 -------------
 
-    ➜  ~  hphpa --checkstyle hphp.xml /usr/local/src/code-coverage/PHP
-    hphpa 1.0.6 by Sebastian Bergmann.
+    ➜  ~  hphpa --checkstyle hphpa.xml /usr/local/src/code-coverage/PHP
+    hphpa 1.1.0 by Sebastian Bergmann.
+
+    Using ruleset /usr/share/pear/data/hphpa/ruleset.xml
 
     /usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php
       206   Too many arguments in function or method call:
@@ -29,7 +31,7 @@ Usage Example
 
     Found 1 violation in 1 file (out of 21 total files).
 
-    ➜  ~  cat hphp.xml
+    ➜  ~  cat hphpa.xml
     <?xml version="1.0" encoding="UTF-8"?>
     <checkstyle>
      <file name="/usr/local/src/code-coverage/PHP/CodeCoverage/Filter.php">

@@ -41,9 +41,9 @@
  * @since     File available since Release 1.1.0
  */
 
-require_once 'File/Iterator/Autoload.php';
-require_once 'TheSeer/fDOMDocument/autoload.php';
-require_once 'ezc/Base/base.php';
+require 'File/Iterator/Autoload.php';
+require 'TheSeer/fDOMDocument/autoload.php';
+require 'ezc/Base/base.php';
 
 function hphpa_autoload($class) {
     static $classes = NULL;

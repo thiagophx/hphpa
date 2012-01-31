@@ -197,11 +197,7 @@ class HPHPA_TextUI_Command
         $this->printVersionString();
 
         if (!$ruleset) {
-            if (strpos('@data_dir@', '@data_dir') === 0) {
-                $ruleset = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'ruleset.xml';
-            } else {
-                $ruleset = '@data_dir@' . DIRECTORY_SEPARATOR . 'hphpa' . DIRECTORY_SEPARATOR . 'ruleset.xml';
-            }
+            $ruleset = $this->getDefaultRulesetFile();
         }
 
         try {
@@ -304,5 +300,18 @@ EOT;
     protected function printVersionString()
     {
         print "hphpa @package_version@ by Sebastian Bergmann.\n\n";
+    }
+
+    /**
+     * @return string
+     * @since  Method available since Release 1.1.0
+     */
+    protected function getDefaultRulesetFile()
+    {
+        if (strpos('@data_dir@', '@data_dir') === 0) {
+            return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'ruleset.xml';
+        }
+
+        return'@data_dir@' . DIRECTORY_SEPARATOR . 'hphpa' . DIRECTORY_SEPARATOR . 'ruleset.xml';
     }
 }

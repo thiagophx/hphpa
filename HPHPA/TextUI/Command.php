@@ -160,18 +160,19 @@ class HPHPA_TextUI_Command
         }
 
         $arguments  = $input->getArguments();
-        $checkstyle = $input->getOption('checkstyle')->value;
-        $ruleset    = $input->getOption('ruleset')->value;
-        $exclude    = $input->getOption('exclude')->value;
-        $quiet      = $input->getOption('quiet')->value;
 
-        $suffixes = explode(',', $input->getOption('suffixes')->value);
-        array_map('trim', $suffixes);
-
-        if (!empty($arguments)) {
+        if (empty($arguments)) {
             $this->showHelp();
             exit(1);
         }
+
+        $checkstyle = $input->getOption('checkstyle')->value;
+        $exclude    = $input->getOption('exclude')->value;
+        $ruleset    = $input->getOption('ruleset')->value;
+        $suffixes   = explode(',', $input->getOption('suffixes')->value);
+        $quiet      = $input->getOption('quiet')->value;
+
+        array_map('trim', $suffixes);
 
         $facade = new File_Iterator_Facade;
         $result = $facade->getFilesAsArray(

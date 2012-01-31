@@ -166,11 +166,11 @@ class HPHPA_TextUI_Command
             exit(1);
         }
 
-        $checkstyle = $input->getOption('checkstyle')->value;
-        $excludes   = $input->getOption('exclude')->value;
-        $ruleset    = $input->getOption('ruleset')->value;
-        $suffixes   = explode(',', $input->getOption('suffixes')->value);
-        $quiet      = $input->getOption('quiet')->value;
+        $checkstyle  = $input->getOption('checkstyle')->value;
+        $excludes    = $input->getOption('exclude')->value;
+        $rulesetFile = $input->getOption('ruleset')->value;
+        $suffixes    = explode(',', $input->getOption('suffixes')->value);
+        $quiet       = $input->getOption('quiet')->value;
 
         array_map('trim', $suffixes);
 
@@ -196,18 +196,20 @@ class HPHPA_TextUI_Command
 
         $this->printVersionString();
 
-        if (!$ruleset) {
-            $ruleset = $this->getDefaultRulesetFile();
+        if (!$rulesetFile) {
+            $rulesetFile = $this->getDefaultRulesetFile();
         }
 
         try {
-            $ruleset = new HPHPA_Ruleset($ruleset);
+            $ruleset = new HPHPA_Ruleset($rulesetFile);
             $rules   = $ruleset->getRules();
         }
 
         catch (Exception $e) {
             $this->showError('Could not read ruleset.');
         }
+
+        printf("Using ruleset %s\n\n", $rulesetFile);
 
         $analyzer = new HPHPA_Analyzer;
         $result   = new HPHPA_Result;

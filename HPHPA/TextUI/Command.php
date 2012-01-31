@@ -71,7 +71,7 @@ class HPHPA_TextUI_Command
         $input->registerOption(
           new ezcConsoleOption(
             '',
-            'configuration',
+            'ruleset',
             ezcConsoleInput::TYPE_STRING
            )
         );
@@ -159,11 +159,11 @@ class HPHPA_TextUI_Command
             exit(0);
         }
 
-        $arguments     = $input->getArguments();
-        $checkstyle    = $input->getOption('checkstyle')->value;
-        $configuration = $input->getOption('configuration')->value;
-        $exclude       = $input->getOption('exclude')->value;
-        $quiet         = $input->getOption('quiet')->value;
+        $arguments  = $input->getArguments();
+        $checkstyle = $input->getOption('checkstyle')->value;
+        $ruleset    = $input->getOption('ruleset')->value;
+        $exclude    = $input->getOption('exclude')->value;
+        $quiet      = $input->getOption('quiet')->value;
 
         $suffixes = explode(',', $input->getOption('suffixes')->value);
         array_map('trim', $suffixes);
@@ -184,22 +184,26 @@ class HPHPA_TextUI_Command
 
         $this->printVersionString();
 
-        $whitelist = array();
-
-        if ($configuration) {
-            try {
-                $configuration = new HPHPA_Configuration($configuration);
-                $whitelist     = $configuration->getWhitelist();
+        if (!$ruleset) {
+            if (strpos('@data_dir@', '@data_dir') === 0) {
+                $ruleset = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'ruleset.xml';
+            } else {
+                $ruleset = '@data_dir@' . DIRECTORY_SEPARATOR . 'hphpa' . DIRECTORY_SEPARATOR . 'ruleset.xml';
             }
+        }
 
-            catch (Exception $e) {
-                $this->showError('Could not read configuration.');
-            }
+        try {
+            $ruleset = new HPHPA_Ruleset($ruleset);
+            $rules   = $ruleset->getRules();
+        }
+
+        catch (Exception $e) {
+            $this->showError('Could not read ruleset.');
         }
 
         $analyzer = new HPHPA_Analyzer;
         $result   = new HPHPA_Result;
-        $result->setWhitelist($whitelist);
+        $result->setRules($rules);
 
         try {
             $analyzer->run($files, $result);
@@ -269,7 +273,7 @@ class HPHPA_TextUI_Command
 Usage: hphpa [switches] <directory|file> ...
 
   --checkstyle <file>     Write report in Checkstyle XML format to file.
-  --configuration <file>  Read list of rules to apply from XML file.
+  --ruleset <file>        Read list of rules to apply from XML file.
 
   --exclude <dir>         Exclude <dir> from code analysis.
   --suffixes <suffix>     A comma-separated list of file suffixes to check.

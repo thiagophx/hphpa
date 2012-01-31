@@ -1,41 +1,9 @@
-hphpa 1.0
+hphpa 1.1
 =========
 
-This is the list of changes for the hphpa 1.0 release series.
+This is the list of changes for the hphpa 1.1 release series.
 
-hphpa 1.0.6
+hphpa 1.1.0
 -----------
 
-* Fixed a bug that caused only one violation per file to be reported.
-
-hphpa 1.0.5
------------
-
-* A summary of information (number of violations, number of files with violations, number of files analyzed) is now printed.
-* `hphpa` now exits with status code `1` when violations are found.
-
-hphpa 1.0.4
------------
-
-* Improved the messages for the `UnknownObjectMethod`, `StatementHasNoEffect`, and `UseVoidReturn` violations.
-* Error messages from HipHop's static analyzer are now suppressed.
-
-hphpa 1.0.3
------------
-
-* Implemented proper violation messages.
-
-hphpa 1.0.2
------------
-
-* Fixed the format of the `severity` attribute.
-
-hphpa 1.0.1
------------
-
-* Added missing `severity` attribute to Checkstyle XML logfile.
-
-hphpa 1.0.0
------------
-
-* Initial release.
+* Added support for configuring rules via an XML configuration file.

@@ -51,7 +51,7 @@
  * @link      http://github.com/sebastianbergmann/hphpa/tree
  * @since     Class available since Release 1.1.0
  */
-class HPHPA_Configuration
+class HPHPA_Ruleset
 {
     /**
      * @var fDOMDocument
@@ -70,14 +70,17 @@ class HPHPA_Configuration
     /**
      * @return array
      */
-    public function getWhitelist()
+    public function getRules()
     {
-        $whitelist = array();
+        $rules = array();
 
         foreach ($this->xml->getDOMXPath()->query('rule') as $rule) {
-            $whitelist[(string)$rule->getAttribute('name')] = TRUE;
+            $name    = (string)$rule->getAttribute('name');
+            $message = (string)$rule->getAttribute('message');
+
+            $rules[$name] = $message;
         }
 
-        return $whitelist;
+        return $rules;
     }
 }

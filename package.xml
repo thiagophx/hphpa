@@ -50,13 +50,15 @@
     <file baseinstalldir="/" name="Analyzer.php" role="php">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
-    <file baseinstalldir="/" name="Configuration.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
     <file baseinstalldir="/" name="Result.php" role="php">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
+    <file baseinstalldir="/" name="Ruleset.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+    </file>
    </dir>
+   <file baseinstalldir="/" name="ruleset.xml" role="data"/>
    <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
    <file baseinstalldir="/" name="LICENSE" role="doc"/>
    <file baseinstalldir="/" name="README.markdown" role="doc"/>
@@ -70,10 +72,10 @@
  <dependencies>
   <required>
    <php>
-    <min>5.2.7</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
-    <min>1.9.2</min>
+    <min>1.9.4</min>
    </pearinstaller>
    <package>
     <name>ConsoleTools</name>

@@ -52,10 +52,10 @@ function hphpa_autoload($class) {
     if ($classes === NULL) {
         $classes = array(
           'hphpa_analyzer' => '/Analyzer.php',
-          'hphpa_configuration' => '/Configuration.php',
           'hphpa_report_checkstyle' => '/Report/Checkstyle.php',
           'hphpa_report_text' => '/Report/Text.php',
           'hphpa_result' => '/Result.php',
+          'hphpa_ruleset' => '/Ruleset.php',
           'hphpa_textui_command' => '/TextUI/Command.php'
         );
 

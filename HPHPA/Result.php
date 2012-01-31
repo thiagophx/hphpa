@@ -56,66 +56,7 @@ class HPHPA_Result
     /**
      * @var array
      */
-    protected $blacklist = array(
-      'BadPHPIncludeFile' => TRUE,
-      'PHPIncludeFileNotFound' => TRUE,
-      'UnknownBaseClass' => TRUE,
-      'UnknownClass' => TRUE,
-      'UnknownFunction' => TRUE
-    );
-
-    /**
-     * @var array
-     */
-    protected $whitelist = array();
-
-    /**
-     * @var array
-     */
-    protected $typeToMessageMap = array(
-      'BadPHPIncludeFile' => 'Bad include: %s',
-      'PHPIncludeFileNotFound' => 'Include not found: %s',
-      'UseEvaluation' => 'Usage of eval()',
-      'UseUndeclaredVariable' => 'Variable "%s" is not declared',
-      'UseUndeclaredGlobalVariable' => 'Global variable "%s" is not declared',
-      'UseUndeclaredConstant' => 'Constant "%s" is not declared',
-      'UnknownClass' => 'Class "%s" is unknown',
-      'UnknownBaseClass' => 'Base class "%s" is unknown',
-      'UnknownObjectMethod' => 'Call to unknown method: %s',
-      'InvalidMagicMethod' => 'Magic method "%s" is invalid',
-      'UnknownFunction' => 'Unknown function "%s"',
-      'BadConstructorCall' => 'Bad call to constructor: %s',
-      'DeclaredVariableTwice' => 'Variable is declared twice: %s',
-      'DeclaredConstantTwice' => 'Constant is declared twice: %s',
-      'BadDefine' => 'Bad define: %s',
-      'RequiredAfterOptionalParam' => 'Required parameters after optional parameters: %s',
-      'RedundantParameter' => 'Redundant parameter: %s',
-      'TooFewArgument' => 'Too few arguments in function or method call: %s',
-      'TooManyArgument' => 'Too many arguments in function or method call: %s',
-      'BadArgumentType' => 'Bad argument type: %s',
-      'StatementHasNoEffect' => 'Statement "%s" has no effect',
-      'UseVoidReturn' => 'Usage of void return value from "%s"',
-      'MissingObjectContext' => 'Trying to use $this in static context',
-      'MoreThanOneDefault' => 'More than one default in switch statement',
-      'InvalidArrayElement' => 'Invalid array element: %s',
-      'InvalidDerivation' => 'Invalid inheritance: %s',
-      'InvalidOverride' => 'Invalid override: %s',
-      'ReassignThis' => 'Reassignment of $this',
-      'MissingAbstractMethodImpl' => 'Implementation of abstract methods missing: %s',
-      'BadPassByReference' => 'Bad pass-by-reference: %s',
-      'ConditionalClassLoading' => 'Class "%s" is conditionally loaded',
-      'GotoUndefLabel' => 'GOTO to invalid label "%s"',
-      'GotoInvalidBlock' => 'GOTO to invalid block: %s',
-      'AbstractProperty' => 'Attribute "%s" is abstract',
-      'UnknownTrait' => 'Trait "%s" is unknown',
-      'MethodInMultipleTraits' => 'Method "%s" is declared in multiple traits',
-      'UnknownTraitMethod' => 'Trait method "%s" is unknown',
-      'InvalidAccessModifier' => 'Access modified "%s" is invalid',
-      'CyclicDependentTraits' => 'Cyclic dependency between traits: %s',
-      'InvalidTraitStatement' => 'Invalid trait statement: %s',
-      'RedeclaredTrait' => 'Trait "%s" is declared twice',
-      'InvalidInstantiation' => 'Invalid instantiation: %s'
-    );
+    protected $rules = array();
 
     /**
      * @var array
@@ -131,12 +72,12 @@ class HPHPA_Result
     }
 
     /**
-     * @param array $whitelist
+     * @param array $rules
      * @since Method available since Release 1.1.0
      */
-    public function setWhitelist(array $whitelist)
+    public function setRules(array $rules)
     {
-        $this->whitelist = $whitelist;
+        $this->rules = $rules;
     }
 
     /**
@@ -145,9 +86,7 @@ class HPHPA_Result
     public function parse(array $codeError)
     {
         foreach ($codeError[1] as $rule => $violations) {
-            if ((!empty($this->whitelist) && !isset($this->whitelist[$rule])) ||
-                isset($this->blacklist[$rule]) ||
-                !is_array($violations)) {
+            if (!isset($this->rules[$rule]) || !is_array($violations)) {
                 continue;
             }
 
@@ -155,7 +94,7 @@ class HPHPA_Result
                 $filename = $violation['c1'][0];
                 $line     = $violation['c1'][1];
                 $message  = sprintf(
-                              $this->typeToMessageMap[$rule],
+                              $this->rules[$rule],
                               trim($violation['d'])
                             );
 

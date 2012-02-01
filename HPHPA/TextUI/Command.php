@@ -215,7 +215,7 @@ class HPHPA_TextUI_Command
             $this->showError('Could not read ruleset.');
         }
 
-        printf("Using ruleset %s\n\n", $rulesetFile);
+        printf("Using ruleset %s\n\n", realpath($rulesetFile));
 
         $analyzer = new HPHPA_Analyzer;
         $result   = new HPHPA_Result;

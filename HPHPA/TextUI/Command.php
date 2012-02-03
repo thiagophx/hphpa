@@ -176,31 +176,7 @@ class HPHPA_TextUI_Command
 
         $this->printVersionString();
 
-        $finder = new Symfony\Component\Finder\Finder;
-
-        try {
-            foreach ($arguments as $argument) {
-                $finder->in($argument);
-            }
-
-            foreach ($excludes as $exclude) {
-                $finder->exclude($exclude);
-            }
-
-            foreach ($suffixes as $suffix) {
-                $finder->name('*' . $suffix);
-            }
-        }
-
-        catch (Exception $e) {
-            $this->showError($e->getMessage());
-        }
-
-        $files = array();
-
-        foreach ($finder as $file) {
-            $files[] = $file->getRealpath();
-        }
+        $files = $this->findFiles($arguments, $excludes, $suffixes);
 
         if (!$rulesetFile) {
             $rulesetFile = $this->getDefaultRulesetFile();
@@ -308,6 +284,44 @@ EOT;
     protected function printVersionString()
     {
         print "hphpa @package_version@ by Sebastian Bergmann.\n\n";
+    }
+
+    /**
+     * @param  array $directories
+     * @param  array $excludes
+     * @param  array $suffixes
+     * @return array
+     * @since  Method available since Release 1.1.0
+     */
+    protected function findFiles(array $directories, array $excludes, array $suffixes)
+    {
+        $finder = new Symfony\Component\Finder\Finder;
+
+        try {
+            foreach ($directories as $directory) {
+                $finder->in($directory);
+            }
+
+            foreach ($excludes as $exclude) {
+                $finder->exclude($exclude);
+            }
+
+            foreach ($suffixes as $suffix) {
+                $finder->name('*' . $suffix);
+            }
+        }
+
+        catch (Exception $e) {
+            $this->showError($e->getMessage());
+        }
+
+        $files = array();
+
+        foreach ($finder as $file) {
+            $files[] = $file->getRealpath();
+        }
+
+        return $files;
     }
 
     /**

@@ -41,15 +41,9 @@
  * @since     File available since Release 1.1.0
  */
 
-require 'Symfony/Component/Finder/Finder.php';
-require 'Symfony/Component/Finder/Glob.php';
-require 'Symfony/Component/Finder/Iterator/FileTypeFilterIterator.php';
-require 'Symfony/Component/Finder/Iterator/FilenameFilterIterator.php';
-require 'Symfony/Component/Finder/Iterator/RecursiveDirectoryIterator.php';
-require 'Symfony/Component/Finder/Iterator/ExcludeDirectoryFilterIterator.php';
-require 'Symfony/Component/Finder/SplFileInfo.php';
-require 'TheSeer/fDOMDocument/autoload.php';
-require 'ezc/Base/base.php';
+require_once 'SebastianBergmann/FinderFacade/autoload.php';
+require_once 'TheSeer/fDOMDocument/autoload.php';
+require_once 'ezc/Base/base.php';
 
 function hphpa_autoload($class) {
     static $classes = NULL;
@@ -57,12 +51,7 @@ function hphpa_autoload($class) {
 
     if ($classes === NULL) {
         $classes = array(
-          'hphpa_analyzer' => '/Analyzer.php',
-          'hphpa_report_checkstyle' => '/Report/Checkstyle.php',
-          'hphpa_report_text' => '/Report/Text.php',
-          'hphpa_result' => '/Result.php',
-          'hphpa_ruleset' => '/Ruleset.php',
-          'hphpa_textui_command' => '/TextUI/Command.php'
+          ___CLASSLIST___
         );
 
         $path = dirname(__FILE__);

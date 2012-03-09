@@ -38,49 +38,62 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @since     File available since Release 1.1.0
+ * @since     File available since Release 1.0.0
  */
 
-/**
- * Configuration file loader.
- *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/hphpa/tree
- * @since     Class available since Release 1.1.0
- */
-class HPHPA_Ruleset
+namespace SebastianBergmann\HPHPA\Report
 {
-    /**
-     * @var fDOMDocument
-     */
-    protected $xml;
+    use SebastianBergmann\HPHPA\Result;
 
     /**
-     * @param string $file
+     * Writes violations in Checkstyle XML format to a file.
+     *
+     * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version   Release: @package_version@
+     * @link      http://github.com/sebastianbergmann/hphpa/tree
+     * @since     Class available since Release 1.0.0
      */
-    public function __construct($file)
+    class Checkstyle
     {
-        $this->xml = new TheSeer\fDOM\fDOMDocument;
-        $this->xml->load($file);
-    }
+        /**
+         * @param Result $result
+         * @param string $filename
+         */
+        public function generate(Result $result, $filename)
+        {
+            $out = new XMLWriter;
+            $out->openURI($filename);
+            $out->setIndent(TRUE);
+            $out->startDocument('1.0', 'UTF-8');
+            $out->startElement('checkstyle');
 
-    /**
-     * @return array
-     */
-    public function getRules()
-    {
-        $rules = array();
+            foreach ($result->getViolations() as $file => $lines) {
+                $out->startElement('file');
+                $out->writeAttribute('name', $file);
 
-        foreach ($this->xml->getDOMXPath()->query('rule') as $rule) {
-            $name    = (string)$rule->getAttribute('name');
-            $message = (string)$rule->getAttribute('message');
+                foreach ($lines as $line => $violations) {
+                    foreach ($violations as $violation) {
+                        $out->startElement('error');
 
-            $rules[$name] = $message;
+                        $out->writeAttribute('line', $line);
+                        $out->writeAttribute('message', $violation['message']);
+                        $out->writeAttribute('severity', 'error');
+                        $out->writeAttribute(
+                          'source',
+                          'HipHop.PHP.Analysis.' . $violation['source']
+                        );
+
+                        $out->endElement();
+                    }
+                }
+
+                $out->endElement();
+            }
+
+            $out->endElement();
+            $out->flush();
         }
-
-        return $rules;
     }
 }

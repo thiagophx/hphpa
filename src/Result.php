@@ -41,52 +41,79 @@
  * @since     File available since Release 1.0.0
  */
 
-/**
- * Writes violations in Checkstyle XML format to a file.
- *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/hphpa/tree
- * @since     Class available since Release 1.0.0
- */
-class HPHPA_Report_Text
+namespace SebastianBergmann\HPHPA
 {
     /**
-     * @param HPHPA_Result $result
-     * @param string       $filename
+     * Parser for HipHop CodeError.js logfile.
+     *
+     * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version   Release: @package_version@
+     * @link      http://github.com/sebastianbergmann/hphpa/tree
+     * @since     Class available since Release 1.0.0
      */
-    public function generate(HPHPA_Result $result, $filename)
+    class Result
     {
-        $fp    = fopen($filename, 'w');
-        $first = TRUE;
+        /**
+         * @var array
+         */
+        protected $rules = array();
 
-        foreach ($result->getViolations() as $file => $lines) {
-            if ($first) {
-                $first = FALSE;
-            } else {
-                fwrite($fp, "\n");
-            }
+        /**
+         * @var array
+         */
+        protected $violations = array();
 
-            fwrite($fp, $file . "\n");
+        /**
+         * @return array
+         */
+        public function getViolations()
+        {
+            return $this->violations;
+        }
 
-            ksort($lines);
+        /**
+         * @param array $rules
+         * @since Method available since Release 1.1.0
+         */
+        public function setRules(array $rules)
+        {
+            $this->rules = $rules;
+        }
 
-            foreach ($lines as $line => $violations) {
+        /**
+         * @param array $codeError
+         */
+        public function parse(array $codeError)
+        {
+            foreach ($codeError[1] as $rule => $violations) {
+                if (!isset($this->rules[$rule]) || !is_array($violations)) {
+                    continue;
+                }
+
                 foreach ($violations as $violation) {
-                    fwrite(
-                      $fp,
-                      sprintf(
-                        "  %-6d%s\n",
-                        $line,
-                        wordwrap($violation['message'], 70, "\n        ")
-                      )
+                    $filename = $violation['c1'][0];
+                    $line     = $violation['c1'][1];
+                    $message  = sprintf(
+                                  $this->rules[$rule],
+                                  trim($violation['d'])
+                                );
+
+                    if (!isset($this->violations[$filename])) {
+                        $this->violations[$filename] = array();
+                    }
+
+                    if (!isset($this->violations[$filename][$line])) {
+                        $this->violations[$filename][$line] = array();
+                    }
+
+                    $this->violations[$filename][$line][] = array(
+                      'message'  => $message,
+                      'source'   => $rule
                     );
                 }
             }
         }
-
-        fclose($fp);
     }
 }

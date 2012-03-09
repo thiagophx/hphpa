@@ -17,10 +17,10 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2012-02-05</date>
+ <date>2012-03-09</date>
  <version>
-  <release>1.1.0</release>
-  <api>1.1.0</api>
+  <release>1.2.0</release>
+  <api>1.2.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -30,33 +30,35 @@
  <notes>http://github.com/sebastianbergmann/hphpa/tree</notes>
  <contents>
   <dir name="/">
-   <dir name="HPHPA">
-    <dir name="Report">
-     <file baseinstalldir="/" name="Checkstyle.php" role="php">
+   <dir name="SebastianBergmann">
+    <dir name="HPHPA">
+     <dir name="Report">
+      <file baseinstalldir="/" name="Checkstyle.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Text.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="TextUI">
+      <file baseinstalldir="/" name="Command.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+      </file>
+     </dir>
+     <file baseinstalldir="/" name="autoload.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Text.php" role="php">
+     <file baseinstalldir="/" name="Analyzer.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Result.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Ruleset.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
-    <dir name="TextUI">
-     <file baseinstalldir="/" name="Command.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
-     </file>
-    </dir>
-    <file baseinstalldir="/" name="Autoload.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-    <file baseinstalldir="/" name="Analyzer.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-    <file baseinstalldir="/" name="Result.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-    <file baseinstalldir="/" name="Ruleset.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
    </dir>
    <file baseinstalldir="/" name="ruleset.xml" role="data"/>
    <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
@@ -88,9 +90,9 @@
     <min>1.2.4</min>
    </package>
    <package>
-    <name>Finder</name>
-    <channel>pear.symfony.com</channel>
-    <min>2.0.9</min>
+    <name>FinderFacade</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
    </package>
   </required>
  </dependencies>

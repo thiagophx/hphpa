@@ -38,79 +38,54 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @since     File available since Release 1.0.0
+ * @since     File available since Release 1.1.0
  */
 
-/**
- * Parser for HipHop CodeError.js logfile.
- *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/hphpa/tree
- * @since     Class available since Release 1.0.0
- */
-class HPHPA_Result
+namespace SebastianBergmann\HPHPA
 {
-    /**
-     * @var array
-     */
-    protected $rules = array();
+    use \TheSeer\fDOM\fDOMDocument;
 
     /**
-     * @var array
+     * Configuration file loader.
+     *
+     * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version   Release: @package_version@
+     * @link      http://github.com/sebastianbergmann/hphpa/tree
+     * @since     Class available since Release 1.1.0
      */
-    protected $violations = array();
-
-    /**
-     * @return array
-     */
-    public function getViolations()
+    class Ruleset
     {
-        return $this->violations;
-    }
+        /**
+         * @var fDOMDocument
+         */
+        protected $xml;
 
-    /**
-     * @param array $rules
-     * @since Method available since Release 1.1.0
-     */
-    public function setRules(array $rules)
-    {
-        $this->rules = $rules;
-    }
+        /**
+         * @param string $file
+         */
+        public function __construct($file)
+        {
+            $this->xml = new fDOMDocument;
+            $this->xml->load($file);
+        }
 
-    /**
-     * @param array $codeError
-     */
-    public function parse(array $codeError)
-    {
-        foreach ($codeError[1] as $rule => $violations) {
-            if (!isset($this->rules[$rule]) || !is_array($violations)) {
-                continue;
+        /**
+         * @return array
+         */
+        public function getRules()
+        {
+            $rules = array();
+
+            foreach ($this->xml->getDOMXPath()->query('rule') as $rule) {
+                $name    = (string)$rule->getAttribute('name');
+                $message = (string)$rule->getAttribute('message');
+
+                $rules[$name] = $message;
             }
 
-            foreach ($violations as $violation) {
-                $filename = $violation['c1'][0];
-                $line     = $violation['c1'][1];
-                $message  = sprintf(
-                              $this->rules[$rule],
-                              trim($violation['d'])
-                            );
-
-                if (!isset($this->violations[$filename])) {
-                    $this->violations[$filename] = array();
-                }
-
-                if (!isset($this->violations[$filename][$line])) {
-                    $this->violations[$filename][$line] = array();
-                }
-
-                $this->violations[$filename][$line][] = array(
-                  'message'  => $message,
-                  'source'   => $rule
-                );
-            }
+            return $rules;
         }
     }
 }

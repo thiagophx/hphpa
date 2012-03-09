@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * hphpa
@@ -38,37 +39,15 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @since     File available since Release 1.1.0
+ * @since     File available since Release 1.0.0
  */
 
-require 'Symfony/Component/Finder/Finder.php';
-require 'Symfony/Component/Finder/Glob.php';
-require 'Symfony/Component/Finder/Iterator/FileTypeFilterIterator.php';
-require 'Symfony/Component/Finder/Iterator/FilenameFilterIterator.php';
-require 'Symfony/Component/Finder/Iterator/RecursiveDirectoryIterator.php';
-require 'Symfony/Component/Finder/Iterator/ExcludeDirectoryFilterIterator.php';
-require 'Symfony/Component/Finder/SplFileInfo.php';
-require 'TheSeer/fDOMDocument/autoload.php';
-require 'ezc/Base/base.php';
-
-function hphpa_autoload($class) {
-    static $classes = NULL;
-    static $path = NULL;
-
-    if ($classes === NULL) {
-        $classes = array(
-          ___CLASSLIST___
-        );
-
-        $path = dirname(__FILE__);
-    }
-
-    $cn = strtolower($class);
-
-    if (isset($classes[$cn])) {
-        require $path . $classes[$cn];
-    }
+if (strpos('@php_bin@', '@php_bin') === 0) {
+    require 'src/autoload.php';
+} else {
+    require 'SebastianBergmann/HPHPA/autoload.php';
 }
 
-spl_autoload_register('hphpa_autoload');
-spl_autoload_register(array('ezcBase', 'autoload'));
+
+$textui = new SebastianBergmann\HPHPA\TextUI\Command;
+$textui->main();

@@ -41,54 +41,57 @@
  * @since     File available since Release 1.0.0
  */
 
-/**
- * Writes violations in Checkstyle XML format to a file.
- *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/hphpa/tree
- * @since     Class available since Release 1.0.0
- */
-class HPHPA_Report_Checkstyle
+namespace SebastianBergmann\HPHPA\Report
 {
+    use SebastianBergmann\HPHPA\Result;
+
     /**
-     * @param HPHPA_Result $result
-     * @param string       $filename
+     * Writes violations in Checkstyle XML format to a file.
+     *
+     * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version   Release: @package_version@
+     * @link      http://github.com/sebastianbergmann/hphpa/tree
+     * @since     Class available since Release 1.0.0
      */
-    public function generate(HPHPA_Result $result, $filename)
+    class Text
     {
-        $out = new XMLWriter;
-        $out->openURI($filename);
-        $out->setIndent(TRUE);
-        $out->startDocument('1.0', 'UTF-8');
-        $out->startElement('checkstyle');
+        /**
+         * @param Result $result
+         * @param string $filename
+         */
+        public function generate(Result $result, $filename)
+        {
+            $fp    = fopen($filename, 'w');
+            $first = TRUE;
 
-        foreach ($result->getViolations() as $file => $lines) {
-            $out->startElement('file');
-            $out->writeAttribute('name', $file);
+            foreach ($result->getViolations() as $file => $lines) {
+                if ($first) {
+                    $first = FALSE;
+                } else {
+                    fwrite($fp, "\n");
+                }
 
-            foreach ($lines as $line => $violations) {
-                foreach ($violations as $violation) {
-                    $out->startElement('error');
+                fwrite($fp, $file . "\n");
 
-                    $out->writeAttribute('line', $line);
-                    $out->writeAttribute('message', $violation['message']);
-                    $out->writeAttribute('severity', 'error');
-                    $out->writeAttribute(
-                      'source',
-                      'HipHop.PHP.Analysis.' . $violation['source']
-                    );
+                ksort($lines);
 
-                    $out->endElement();
+                foreach ($lines as $line => $violations) {
+                    foreach ($violations as $violation) {
+                        fwrite(
+                          $fp,
+                          sprintf(
+                            "  %-6d%s\n",
+                            $line,
+                            wordwrap($violation['message'], 70, "\n        ")
+                          )
+                        );
+                    }
                 }
             }
 
-            $out->endElement();
+            fclose($fp);
         }
-
-        $out->endElement();
-        $out->flush();
     }
 }

@@ -38,52 +38,36 @@
  * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @since     File available since Release 1.0.0
+ * @since     File available since Release 1.1.0
  */
 
-/**
- * Wrapper for HipHop's static analyzer.
- *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/hphpa/tree
- * @since     Class available since Release 1.0.0
- */
-class HPHPA_Analyzer
-{
-    /**
-     * @param array        $files
-     * @param HPHPA_Result $result
-     */
-    public function run(array $files, HPHPA_Result $result)
-    {
-        $tmpfname = tempnam('/tmp', 'hphp');
-        file_put_contents($tmpfname, join("\n", $files));
+require_once 'SebastianBergmann/FinderFacade/autoload.php';
+require_once 'TheSeer/fDOMDocument/autoload.php';
+require_once 'ezc/Base/base.php';
 
-        shell_exec(
-          sprintf(
-            'hphp -t analyze --input-list %s --output-dir %s --log 2 2>&1',
-            $tmpfname,
-            dirname($tmpfname)
-          )
+function hphpa_autoload($class) {
+    static $classes = NULL;
+    static $path = NULL;
+
+    if ($classes === NULL) {
+        $classes = array(
+          'sebastianbergmann\\hphpa\\analyzer' => '/Analyzer.php',
+          'sebastianbergmann\\hphpa\\report\\checkstyle' => '/Report/Checkstyle.php',
+          'sebastianbergmann\\hphpa\\report\\text' => '/Report/Text.php',
+          'sebastianbergmann\\hphpa\\result' => '/Result.php',
+          'sebastianbergmann\\hphpa\\ruleset' => '/Ruleset.php',
+          'sebastianbergmann\\hphpa\\textui\\command' => '/TextUI/Command.php'
         );
 
-        unlink($tmpfname);
+        $path = dirname(__FILE__);
+    }
 
-        $codeError = dirname($tmpfname) . DIRECTORY_SEPARATOR . 'CodeError.js';
-        $stats     = dirname($tmpfname) . DIRECTORY_SEPARATOR . 'Stats.js';
+    $cn = strtolower($class);
 
-        if (!file_exists($codeError)) {
-            throw new RuntimeException(
-              'HipHop failed to complete static analysis.'
-            );
-        }
-
-        $result->parse(json_decode(file_get_contents($codeError), TRUE));
-
-        unlink($codeError);
-        unlink($stats);
+    if (isset($classes[$cn])) {
+        require $path . $classes[$cn];
     }
 }
+
+spl_autoload_register('hphpa_autoload');
+spl_autoload_register(array('ezcBase', 'autoload'));

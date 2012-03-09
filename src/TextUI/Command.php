@@ -115,7 +115,7 @@ namespace SebastianBergmann\HPHPA\TextUI
             $input->registerOption(
               new \ezcConsoleOption(
                 '',
-                'patterns',
+                'names',
                 \ezcConsoleInput::TYPE_STRING,
                 '*.php',
                 FALSE
@@ -178,14 +178,14 @@ namespace SebastianBergmann\HPHPA\TextUI
             $checkstyle  = $input->getOption('checkstyle')->value;
             $excludes    = $input->getOption('exclude')->value;
             $rulesetFile = $input->getOption('ruleset')->value;
-            $patterns    = explode(',', $input->getOption('patterns')->value);
+            $names       = explode(',', $input->getOption('names')->value);
             $quiet       = $input->getOption('quiet')->value;
 
-            array_map('trim', $patterns);
+            array_map('trim', $names);
 
             $this->printVersionString();
 
-            $finder = new FinderFacade($arguments, $excludes, $patterns);
+            $finder = new FinderFacade($arguments, $excludes, $names);
             $files  = $finder->findFiles();
 
             if (!$rulesetFile) {
@@ -278,7 +278,7 @@ Usage: hphpa [switches] <directory|file> ...
   --ruleset <file>        Read list of rules to apply from XML file.
 
   --exclude <dir>         Exclude <dir> from code analysis.
-  --patterns <patterns>   A comma-separated list of file patterns to check.
+  --names <names>         A comma-separated list of file names to check.
                           (default: *.php)
 
   --help                  Prints this usage information.

@@ -19,8 +19,8 @@
  </lead>
  <date>2012-03-09</date>
  <version>
-  <release>1.2.0</release>
-  <api>1.2.0</api>
+  <release>1.2.1</release>
+  <api>1.2.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -92,7 +92,7 @@
    <package>
     <name>FinderFacade</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.0.1</min>
    </package>
   </required>
  </dependencies>

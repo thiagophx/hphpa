@@ -15,7 +15,7 @@ The following two commands (which you may have to run as `root`) are all that is
     pear config-set auto_discover 1
     pear install pear.phpunit.de/hphpa
 
-After the installation you can find the `hphpa` source files inside your local PEAR directory; the path is usually `/usr/lib/php/HPHPA`.
+After the installation you can find the `hphpa` source files inside your local PEAR directory; the path is usually `/usr/lib/php/SebastianBergmann/HPHPA`.
 
 Usage Example
 -------------

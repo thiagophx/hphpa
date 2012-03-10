@@ -210,8 +210,7 @@ namespace SebastianBergmann\HPHPA\TextUI
             try {
                 $analyzer->run($files, $result);
             }
-
-            catch (RuntimeException $e) {
+            catch (\RuntimeException $e) {
                 $this->showError($e->getMessage());
             }
 

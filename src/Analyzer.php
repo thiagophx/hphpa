@@ -78,7 +78,7 @@ namespace SebastianBergmann\HPHPA
             $stats     = dirname($tmpfname) . DIRECTORY_SEPARATOR . 'Stats.js';
 
             if (!file_exists($codeError)) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                   'HipHop failed to complete static analysis.'
                 );
             }

@@ -34,6 +34,8 @@
   <delete file="${basedir}/build/ChangeLog.markdown"/>
   <delete file="${basedir}/build/LICENSE"/>
   <delete file="${basedir}/build/README.markdown"/>
+  <delete file="${basedir}/build/hphpa.php"/>
+  <delete file="${basedir}/build/ruleset.xml"/>
   <delete>
    <fileset dir="${basedir}/build" includes="**/*.tgz"/>
   </delete>
@@ -196,5 +198,7 @@
   <delete file="${basedir}/build/ChangeLog.markdown"/>
   <delete file="${basedir}/build/LICENSE"/>
   <delete file="${basedir}/build/README.markdown"/>
+  <delete file="${basedir}/build/hphpa.php"/>
+  <delete file="${basedir}/build/ruleset.xml"/>
  </target>
 </project>

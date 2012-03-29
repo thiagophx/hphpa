@@ -63,7 +63,7 @@ namespace SebastianBergmann\HPHPA\Report
          */
         public function generate(Result $result, $filename)
         {
-            $out = new XMLWriter;
+            $out = new \XMLWriter;
             $out->openURI($filename);
             $out->setIndent(TRUE);
             $out->startDocument('1.0', 'UTF-8');

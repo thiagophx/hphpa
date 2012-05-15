@@ -2,10 +2,10 @@
 
 <ruleset>
  <!--<rule name="BadPHPIncludeFile" message="Bad include: %s" />-->
- <!--<rule name="PHPIncludeFileNotFound" message="Include not found: %s" />-->
- <!--<rule name="UnknownClass" message="Class %s is unknown" />-->
- <!--<rule name="UnknownBaseClass" message="Base class %s is unknown" />-->
- <!--<rule name="UnknownFunction" message="Unknown function %s" />-->
+ <rule name="PHPIncludeFileNotFound" message="Include not found: %s" />
+ <rule name="UnknownClass" message="Class %s is unknown" />
+ <rule name="UnknownBaseClass" message="Base class %s is unknown" />
+ <rule name="UnknownFunction" message="Unknown function %s" />
  <rule name="UseEvaluation" message="Usage of eval()" />
  <rule name="UseUndeclaredVariable" message="Variable %s is not declared" />
  <rule name="UseUndeclaredGlobalVariable" message="Global variable %s is not declared" />
